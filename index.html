@@ -1,13 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <title>Adam Ahmed Portfolio</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <link rel="stylesheet" href="style.css">
+        <title>Adam Ahmed Portfolio</title>
 </head>
 <body>
+
+    <script>
+        const sections = document.querySelectorAll('section[id]');
+const navigation = document.querySelector('.navigation');
+
+// Improved IntersectionObserver configuration with options
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const sectionId = entry.target.id;
+      const selectedLink = navigation.querySelector(`a[href="#${sectionId}"]`);
+
+      // Clear active class efficiently using toggle
+      navigation.querySelectorAll('a').forEach(link => link.classList.toggle('active', link === selectedLink));
+
+      // Optionally trigger custom events for further actions
+      const section = document.getElementById(sectionId);
+      section.dispatchEvent(new CustomEvent('sectionInViewport', { detail: { section } }));
+    }
+  });
+}, {
+  root: null,  // Observe the entire viewport
+  threshold: 0.5, // Trigger at 50% visibility
+});
+
+sections.forEach(section => {
+  observer.observe(section);
+});
+
+// Enhance navigation links with smooth scrolling and history updates
+navigation.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default anchor link behavior
+
+    const targetId = this.getAttribute('href');
+    const targetSection = document.querySelector(targetId);
+
+    // Smooth scrolling with optional offset
+    targetSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start', // Align section to top of viewport (optional)
+      inline: 'center' // Center section horizontally (optional)
+    });
+
+    // Update browser history for navigation buttons/back button support
+    window.history.pushState({}, '', targetId);
+  });
+});
+
+// Example usage: Listen for custom events on sections for further actions
+document.addEventListener('sectionInViewport', event => {
+  const section = event.detail.section;
+  console.log(`Section "${section.id}" is now in viewport`);
+  // Perform additional actions based on the section, like lazy loading content
+});
+
+      </script>
     <header>
         <a href="#" class="logo">Adam</a>    
         <nav class="navigation">
@@ -94,7 +151,7 @@
                     </p>
                     <strong class="project-title">
                         <span>AI Eye Mouse</span>
-                        <a href="https://youtu.be/xWEi-1gTEz0?si=GIDbUD1H_07vKGMk" class="more-details">More details</a>
+                        <a href="https://youtu.be/nvLj_A6SHAQ?si=68GXVfGiDH2x3UwN" class="more-details">More details</a>
                     </strong>
                 </div>
             </div>
